@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
     getAllQuotes,
-    getQuoteById,
+    getOneQuote,
     addQuote,
     deleteQuoteById,
     deleteAllQuotes 
@@ -11,7 +11,7 @@ const {
 
 router.get("/quotes", getAllQuotes);
 
-router.get("/quotes/:id", getQuoteById);
+router.get("/quotes/single", getOneQuote);
 
 router.post("/quotes", addQuote);
 

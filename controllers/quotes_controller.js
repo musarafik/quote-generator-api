@@ -11,17 +11,28 @@ const getAllQuotes = (req, res) => {
     });
 }
 
-const getQuoteById = (req, res) => {
-    const idToFind = req.params.id;
-    Quote.findOne({_id: idToFind}, (err, quote) => {
+const getOneQuote = (req, res) => {
+    Quote.countDocuments({}, (err, count) => {
         if(err){
-            res.status(400).send(err);
+            res.status(400).send("No quotes to get");
         }
         else{
-            res.status(200).send(quote);
+            Quote.find((err, quotes) => {
+                if(err){
+                    res.status(400).send("No quotes to get");
+                }
+                else{
+                    const indexToGet = getRndInteger(0, count - 1);
+                    res.status(200).send(quotes[indexToGet]);
+                }
+            });
         }
     });
 }
+
+const getRndInteger = ((min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+});
 
 const addQuote = (req, res) => {
     const newQuote = new Quote(req.body);
@@ -60,7 +71,7 @@ const deleteAllQuotes = (req, res) => {
 
 module.exports = {
     getAllQuotes,
-    getQuoteById,
+    getOneQuote,
     addQuote,
     deleteQuoteById,
     deleteAllQuotes
